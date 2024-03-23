@@ -324,6 +324,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     a.clear();
                     a += "7";
                     term = false;
+                    SetWindowText(hStatic, L"");
                 }
             }
             else
@@ -339,6 +340,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     a.clear();
                     a += "8";
                     term = false;
+                    SetWindowText(hStatic, L"");
                 }
             }
             else
@@ -354,6 +356,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     a.clear();
                     a += "9";
                     term = false;
+                    SetWindowText(hStatic, L"");
                 }
             }
             else
@@ -369,6 +372,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     a.clear();
                     a += "4";
                     term = false;
+                    SetWindowText(hStatic, L"");
                 }
             }
             else
@@ -384,6 +388,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     a.clear();
                     a += "5";
                     term = false;
+                    SetWindowText(hStatic, L"");
                 }
             }
             else
@@ -399,6 +404,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     a.clear();
                     a += "6";
                     term = false;
+                    SetWindowText(hStatic, L"");
                 }
             }
             else
@@ -414,6 +420,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     a.clear();
                     a += "1";
                     term = false;
+                    SetWindowText(hStatic, L"");
                 }
             }
             else
@@ -429,6 +436,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     a.clear();
                     a += "2";
                     term = false;
+                    SetWindowText(hStatic, L"");
                 }
             }
             else
@@ -444,6 +452,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     a.clear();
                     a += "3";
                     term = false;
+                    SetWindowText(hStatic, L"");
                 }
             }
             else
@@ -459,12 +468,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     a.clear();
                     a += "0";
                     term = false;
+                    SetWindowText(hStatic, L"");
                 }
             }
             else
                 b += "0";
             break;
-            //добавление точки (запятой) в число
+            //добавление точки (запятой) к числу
         case 17:
             if (condition == true)
             {
@@ -480,6 +490,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                             }
                             if (i == a.length() - 1 && points == 0)
                             {
+                                a += "0";
                                 a += ".";
                                 break;
                             }
@@ -489,11 +500,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     else
                     {
                         a.clear();
+                        a += "0";
                         a += ".";
                         term = false;
                     }
                 }
                 else
+                    a += "0";
                     a += ".";
             }
             else
@@ -509,6 +522,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         }
                         if (i == b.length() - 1 && points == 0)
                         {
+                            b += "0";
                             b += ".";
                             break;
                         }
@@ -516,6 +530,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     points = 0;
                 }
                 else
+                    b += "0";
                     b += ".";
             }
             break;
@@ -525,6 +540,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             b.clear();
             sign = '\0';
             condition = true;
+            SetWindowText(hStatic, L"");
             break;
             //ввод знаков
         case 3:
