@@ -339,7 +339,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         ShowWindow(hButton17, SW_SHOW);
         UpdateWindow(hButton17);
 
-        //поле для вывода ответа
+        //текстовое поле для вывода ответа
         hStatic1 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Static"),
             TEXT(""), WS_CHILD | SS_CENTERIMAGE,
@@ -350,6 +350,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         ShowWindow(hStatic1, SW_SHOW);
         UpdateWindow(hStatic1);
 
+        //текстовые поля для вывода a, sign и b
         hStatic2 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Static"),
             TEXT(""), WS_CHILD | ES_RIGHT | SS_CENTERIMAGE,
