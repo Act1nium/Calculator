@@ -722,6 +722,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     sign = '/';
                     condition = false;
                     SetWindowText(hStatic3, L"/");
+                    SetWindowText(hStatic1, L"");
                 }
                 else
                 {
@@ -737,6 +738,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     sign = '*';
                     condition = false;
                     SetWindowText(hStatic3, L"*");
+                    SetWindowText(hStatic1, L"");
                 }
                 else
                 {
@@ -752,6 +754,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     sign = '-';
                     condition = false;
                     SetWindowText(hStatic3, L"-");
+                    SetWindowText(hStatic1, L"");
                 }
                 else
                 {
@@ -781,6 +784,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     sign = '+';
                     condition = false;
                     SetWindowText(hStatic3, L"+");
+                    SetWindowText(hStatic1, L"");
                 }
                 else
                 {
@@ -796,7 +800,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 {
                     //при делении
                 case '/':
-                    if (a.length() <= 102 && b.length() <= 102 && b != "0")
+                    if (a.length() <= 102 && b.length() <= 102 && b != "0" && b != "-0")
                     {
                         first = std::stod(a);
                         second = std::stod(b);
@@ -805,6 +809,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         {
                             removingZeros();
                             outputResult();
+                            SetWindowText(hStatic3, L"");
                         }
                         else
                             SetWindowText(hStatic1, L"0");
@@ -823,6 +828,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         {
                             removingZeros();
                             outputResult();
+                            SetWindowText(hStatic3, L"");
                         }
                         else
                             SetWindowText(hStatic1, L"0");
@@ -839,6 +845,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         result = first - second;
                         removingZeros();
                         outputResult();
+                        SetWindowText(hStatic3, L"");
                     }
                     else
                         SetWindowText(hStatic1, L"ERROR");
@@ -852,6 +859,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         result = first + second;
                         removingZeros();
                         outputResult();
+                        SetWindowText(hStatic3, L"");
                     }
                     else
                         SetWindowText(hStatic1, L"ERROR");
