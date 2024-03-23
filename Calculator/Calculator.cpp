@@ -54,7 +54,7 @@ int WINAPI WinMain(
         WS_EX_OVERLAPPEDWINDOW,
         szWindowClass,
         szTitle,
-        WS_OVERLAPPEDWINDOW,
+        WS_OVERLAPPEDWINDOW & ~WS_SIZEBOX,
         CW_USEDEFAULT, CW_USEDEFAULT,
         215, 330,
         NULL,
