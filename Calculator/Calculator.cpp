@@ -565,22 +565,43 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         case 3:
             if (a != "" && b == "")
             {
-                sign = '/';
-                condition = false;
+                if (a != "-")
+                {
+                    sign = '/';
+                    condition = false;
+                }
+                else
+                {
+                    a.clear();
+                }
             }
             break;
         case 7:
             if (a != "" && b == "")
             {
-                sign = '*';
-                condition = false;
+                if (a != "-")
+                {
+                    sign = '*';
+                    condition = false;
+                }
+                else
+                {
+                    a.clear();
+                }
             }
             break;
         case 11:
             if (a != "" && condition == true)
             {
-                sign = '-';
-                condition = false;
+                if (a != "-")
+                {
+                    sign = '-';
+                    condition = false;
+                }
+                else
+                {
+                    a.clear();
+                }
             }
             else if (a == "")
             {
@@ -594,13 +615,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         case 15:
             if (a != "" && b == "")
             {
-                sign = '+';
-                condition = false;
+                if (a != "-")
+                {
+                    sign = '+';
+                    condition = false;
+                }
+                else
+                {
+                    a.clear();
+                }
             }
             break;
         case 18:
             //вывод ответа + удаление нулей и точки на конце на конце
-            if (a != "" && b != "")
+            if (a != "" && b != "" && b != "-")
             {
                 switch (sign)
                 {
