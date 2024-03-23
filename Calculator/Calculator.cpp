@@ -470,19 +470,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 if (a != "")
                 {
-                    for (int i = 0; i < a.length(); i++)
+                    if (term == false)
                     {
-                        if (a[i] == '.')
+                        for (int i = 0; i < a.length(); i++)
                         {
-                            points += 1;
+                            if (a[i] == '.')
+                            {
+                                points += 1;
+                            }
+                            if (i == a.length() - 1 && points == 0)
+                            {
+                                a += ".";
+                                break;
+                            }
                         }
-                        if (i == a.length() - 1 && points == 0)
-                        {
-                            a += ".";
-                            break;
-                        }
+                        points = 0;
                     }
-                    points = 0;
+                    else
+                    {
+                        a.clear();
+                        a += ".";
+                        term = false;
+                    }
                 }
                 else
                     a += ".";
