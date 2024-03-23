@@ -104,7 +104,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton0 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("C"), WS_CHILD,
-            10, 10, 40, 40,
+            10, 55, 40, 40,
             hWnd, reinterpret_cast<HMENU>(1),
             NULL, NULL
         );
@@ -115,7 +115,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton1 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("<-"), WS_CHILD,
-            100, 10, 40, 40,
+            100, 55, 40, 40,
             hWnd, reinterpret_cast<HMENU>(2),
             NULL, NULL
         );
@@ -126,7 +126,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton2 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("/"), WS_CHILD,
-            145, 10, 40, 40,
+            145, 55, 40, 40,
             hWnd, reinterpret_cast<HMENU>(3),
             NULL, NULL
         );
@@ -137,7 +137,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton3 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("7"), WS_CHILD,
-            10, 55, 40, 40,
+            10, 100, 40, 40,
             hWnd, reinterpret_cast<HMENU>(4),
             NULL, NULL
         );
@@ -148,7 +148,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton4 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("8"), WS_CHILD,
-            55, 55, 40, 40,
+            55, 100, 40, 40,
             hWnd, reinterpret_cast<HMENU>(5),
             NULL, NULL
         );
@@ -159,7 +159,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton5 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("9"), WS_CHILD,
-            100, 55, 40, 40,
+            100, 100, 40, 40,
             hWnd, reinterpret_cast<HMENU>(6),
             NULL, NULL
         );
@@ -170,7 +170,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton6 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("*"), WS_CHILD,
-            145, 55, 40, 40,
+            145, 100, 40, 40,
             hWnd, reinterpret_cast<HMENU>(7),
             NULL, NULL
         );
@@ -181,7 +181,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton7 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("4"), WS_CHILD,
-            10, 100, 40, 40,
+            10, 145, 40, 40,
             hWnd, reinterpret_cast<HMENU>(8),
             NULL, NULL
         );
@@ -192,7 +192,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton8 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("5"), WS_CHILD,
-            55, 100, 40, 40,
+            55, 145, 40, 40,
             hWnd, reinterpret_cast<HMENU>(9),
             NULL, NULL
         );
@@ -203,7 +203,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton9 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("6"), WS_CHILD,
-            100, 100, 40, 40,
+            100, 145, 40, 40,
             hWnd, reinterpret_cast<HMENU>(10),
             NULL, NULL
         );
@@ -214,7 +214,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton10 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("-"), WS_CHILD,
-            145, 100, 40, 40,
+            145, 145, 40, 40,
             hWnd, reinterpret_cast<HMENU>(11),
             NULL, NULL
         );
@@ -225,7 +225,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton11 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("1"), WS_CHILD,
-            10, 145, 40, 40,
+            10, 190, 40, 40,
             hWnd, reinterpret_cast<HMENU>(12),
             NULL, NULL
         );
@@ -236,7 +236,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton12 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("2"), WS_CHILD,
-            55, 145, 40, 40,
+            55, 190, 40, 40,
             hWnd, reinterpret_cast<HMENU>(13),
             NULL, NULL
         );
@@ -247,7 +247,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton13 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("3"), WS_CHILD,
-            100, 145, 40, 40,
+            100, 190, 40, 40,
             hWnd, reinterpret_cast<HMENU>(14),
             NULL, NULL
         );
@@ -258,7 +258,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton14 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("+"), WS_CHILD,
-            145, 145, 40, 40,
+            145, 190, 40, 40,
             hWnd, reinterpret_cast<HMENU>(15),
             NULL, NULL
         );
@@ -269,7 +269,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton15 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("0"), WS_CHILD,
-            55, 190, 40, 40,
+            55, 235, 40, 40,
             hWnd, reinterpret_cast<HMENU>(16),
             NULL, NULL
         );
@@ -280,7 +280,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton16 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT(","), WS_CHILD,
-            100, 190, 40, 40,
+            100, 235, 40, 40,
             hWnd, reinterpret_cast<HMENU>(17),
             NULL, NULL
         );
@@ -291,7 +291,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hButton17 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
             TEXT("="), WS_CHILD,
-            145, 190, 40, 40,
+            145, 235, 40, 40,
             hWnd, reinterpret_cast<HMENU>(18),
             NULL, NULL
         );
@@ -302,7 +302,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         hStatic = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Static"),
             TEXT(""), WS_CHILD | SS_CENTERIMAGE,
-            10, 235, 175, 40,
+            10, 10, 175, 40,
             hWnd, NULL,
             hInst, NULL
         );
