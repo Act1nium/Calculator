@@ -14,7 +14,7 @@ int points = 0; //количество точек в числе
 size_t found; //номер последнего не нуля в строке
 
 static TCHAR szWindowClass[] = _T("DesktopApp");
-static TCHAR szTitle[] = _T("Калькулятор");
+static TCHAR szTitle[] = _T("Calculator");
 
 HINSTANCE hInst;
 
