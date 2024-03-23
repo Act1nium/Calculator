@@ -1,4 +1,4 @@
-﻿#include <windows.h>
+#include <windows.h>
 #include <stdlib.h>
 #include <string.h>
 #include <tchar.h>
@@ -11,6 +11,7 @@ double first, second, result;//первое число, второе, итог (
 char sign, buffer[32]; //знак (/*-+), массив для вывода итога
 bool condition = true, term = false; //условие (введен ли знак), выводили ли уже результат
 int points = 0; //количество точек в числе
+size_t found; //номер последнего не нуля в строке
 
 static TCHAR szWindowClass[] = _T("DesktopApp");
 static TCHAR szTitle[] = _T("Калькулятор");
@@ -554,7 +555,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             }
             break;
         case 18:
-            //вывод ответа
+            //вывод ответа + удаление нулей и точки на конце на конце
             if (a != "" && b != "")
             {
                 switch (sign)
@@ -565,11 +566,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     second = std::stod(b);
                     result = first / second;
                     strResult = std::to_string(result);
+                    found = strResult.find_last_not_of('0');
+                    if (found != std::string::npos && strResult[found] == '.')
+                    {
+                        found--;
+                    }
+                    strResult = strResult.substr(0, found + 1);
                     for (int i = 0; i < strResult.length(); i++)
                     {
                         buffer[i] = strResult[i];
                     }
                     SetWindowTextA(hStatic, buffer);
+                    memset(buffer, 0, sizeof(buffer));
                     break;
                     //при умножении
                 case '*':
@@ -577,11 +585,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     second = std::stod(b);
                     result = first * second;
                     strResult = std::to_string(result);
+                    found = strResult.find_last_not_of('0');
+                    if (found != std::string::npos && strResult[found] == '.')
+                    {
+                        found--;
+                    }
+                    strResult = strResult.substr(0, found + 1);
                     for (int i = 0; i < strResult.length(); i++)
                     {
                         buffer[i] = strResult[i];
                     }
                     SetWindowTextA(hStatic, buffer);
+                    memset(buffer, 0, sizeof(buffer));
                     break;
                     //при разности
                 case '-':
@@ -589,11 +604,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     second = std::stod(b);
                     result = first - second;
                     strResult = std::to_string(result);
+                    found = strResult.find_last_not_of('0');
+                    if (found != std::string::npos && strResult[found] == '.')
+                    {
+                        found--;
+                    }
+                    strResult = strResult.substr(0, found + 1);
                     for (int i = 0; i < strResult.length(); i++)
                     {
                         buffer[i] = strResult[i];
                     }
                     SetWindowTextA(hStatic, buffer);
+                    memset(buffer, 0, sizeof(buffer));
                     break;
                     //при сложении
                 case '+':
@@ -601,11 +623,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     second = std::stod(b);
                     result = first + second;
                     strResult = std::to_string(result);
+                    found = strResult.find_last_not_of('0');
+                    if (found != std::string::npos && strResult[found] == '.')
+                    {
+                        found--;
+                    }
+                    strResult = strResult.substr(0, found + 1);
                     for (int i = 0; i < strResult.length(); i++)
                     {
                         buffer[i] = strResult[i];
                     }
                     SetWindowTextA(hStatic, buffer);
+                    memset(buffer, 0, sizeof(buffer));
                     break;
                 }
                 //сброс после вывода, первое число = итог
@@ -617,7 +646,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             }
             break;
         case 2:
-            //реализация удаления последнего символа
+            //удаление последнего символа
             if (b == "" && sign == '\0' && a != "")
             {
                 a.pop_back();
