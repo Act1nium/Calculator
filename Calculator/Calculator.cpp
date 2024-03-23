@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 
+static HWND hStatic1, hStatic2, hStatic3, hStatic4; //лейблы для: result, a, sign, b
 //переменные, которые будем использовать
 std::string a = "", b = "", strResult; //первое число, второе, итог (строкой)
 double first, second, result;//первое число, второе, итог (числом)
@@ -12,6 +13,35 @@ char sign, buffer[103]; //знак (/*-+), массив для вывода ит
 bool condition = true, term = false; //условие (введен ли знак), выводили ли уже результат
 int points = 0; //количество точек в числе
 size_t found; //номер последнего не нуля в строке
+
+//вывод чисел при вводе
+void outputA()
+{
+    for (int i = 0; i < a.length(); i++)
+    {
+        buffer[i] = a[i];
+    }
+    SetWindowTextA(hStatic2, buffer);
+}
+
+void outputB()
+{
+    for (int i = 0; i < b.length(); i++)
+    {
+        buffer[i] = b[i];
+    }
+    SetWindowTextA(hStatic4, buffer);
+}
+
+//вывод результата
+void outputResult()
+{
+    for (int i = 0; i < strResult.length(); i++)
+    {
+        buffer[i] = strResult[i];
+    }
+    SetWindowTextA(hStatic1, buffer);
+}
 
 static TCHAR szWindowClass[] = _T("DesktopApp");
 static TCHAR szTitle[] = _T("Calculator");
@@ -86,7 +116,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     PAINTSTRUCT ps;
     HDC hdc;
     TCHAR greeting[] = _T("Hello, Windows desktop!");
-    static HWND hStatic;
 
     switch (message) {
     case WM_PAINT:
@@ -299,16 +328,45 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         UpdateWindow(hButton17);
 
         //поле для вывода ответа
-        hStatic = CreateWindowEx(
+        hStatic1 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Static"),
             TEXT(""), WS_CHILD | SS_CENTERIMAGE,
-            10, 10, 175, 40,
+            10, 30, 175, 20,
             hWnd, NULL,
             hInst, NULL
         );
-        ShowWindow(hStatic, SW_SHOW);
-        UpdateWindow(hStatic);
-        break;
+        ShowWindow(hStatic1, SW_SHOW);
+        UpdateWindow(hStatic1);
+
+        hStatic2 = CreateWindowEx(
+            WS_EX_TRANSPARENT, TEXT("Static"),
+            TEXT(""), WS_CHILD | ES_RIGHT | SS_CENTERIMAGE,
+            10, 10, 80, 20,
+            hWnd, NULL,
+            hInst, NULL
+        );
+        ShowWindow(hStatic2, SW_SHOW);
+        UpdateWindow(hStatic2);
+
+        hStatic3 = CreateWindowEx(
+            WS_EX_TRANSPARENT, TEXT("Static"),
+            TEXT(""), WS_CHILD | SS_CENTERIMAGE | ES_CENTER,
+            90, 10, 15, 20,
+            hWnd, NULL,
+            hInst, NULL
+        );
+        ShowWindow(hStatic3, SW_SHOW);
+        UpdateWindow(hStatic3);
+
+        hStatic4 = CreateWindowEx(
+            WS_EX_TRANSPARENT, TEXT("Static"),
+            TEXT(""), WS_CHILD | ES_RIGHT | SS_CENTERIMAGE,
+            105, 10, 80, 20,
+            hWnd, NULL,
+            hInst, NULL
+        );
+        ShowWindow(hStatic4, SW_SHOW);
+        UpdateWindow(hStatic4);
 
     case WM_COMMAND: {
         //ввод первого и второго чисел строкой посимвольно
@@ -318,161 +376,259 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             if (condition == true)
             {
                 if (term == false)
+                {
                     a += "7";
+                    outputA();
+                }
                 else
                 {
                     a.clear();
                     a += "7";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
                     term = false;
-                    SetWindowText(hStatic, L"");
+                    SetWindowText(hStatic1, L"");
                 }
             }
             else
+            {
                 b += "7";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+            }
             break;
         case 5:
             if (condition == true)
             {
                 if (term == false)
+                {
                     a += "8";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
+                }
                 else
                 {
                     a.clear();
                     a += "8";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
                     term = false;
-                    SetWindowText(hStatic, L"");
+                    SetWindowText(hStatic1, L"");
                 }
             }
             else
+            {
                 b += "8";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+            }
             break;
         case 6:
             if (condition == true)
             {
                 if (term == false)
+                {
                     a += "9";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
+                }
                 else
                 {
                     a.clear();
                     a += "9";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
                     term = false;
-                    SetWindowText(hStatic, L"");
+                    SetWindowText(hStatic1, L"");
                 }
             }
             else
+            {
                 b += "9";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+            }
             break;
         case 8:
             if (condition == true)
             {
                 if (term == false)
+                {
                     a += "4";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
+                }
                 else
                 {
                     a.clear();
                     a += "4";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
                     term = false;
-                    SetWindowText(hStatic, L"");
+                    SetWindowText(hStatic1, L"");
                 }
             }
             else
+            {
                 b += "4";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+            }
             break;
         case 9:
             if (condition == true)
             {
                 if (term == false)
+                {
                     a += "5";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
+                }
                 else
                 {
                     a.clear();
                     a += "5";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
                     term = false;
-                    SetWindowText(hStatic, L"");
+                    SetWindowText(hStatic1, L"");
                 }
             }
             else
+            {
                 b += "5";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+            }
             break;
         case 10:
             if (condition == true)
             {
                 if (term == false)
+                {
                     a += "6";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
+                }
                 else
                 {
                     a.clear();
                     a += "6";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
                     term = false;
-                    SetWindowText(hStatic, L"");
+                    SetWindowText(hStatic1, L"");
                 }
             }
             else
+            {
                 b += "6";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+            }
             break;
         case 12:
             if (condition == true)
             {
                 if (term == false)
+                {
                     a += "1";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
+                }
                 else
                 {
                     a.clear();
                     a += "1";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
                     term = false;
-                    SetWindowText(hStatic, L"");
+                    SetWindowText(hStatic1, L"");
                 }
             }
             else
+            {
                 b += "1";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+            }
             break;
         case 13:
             if (condition == true)
             {
                 if (term == false)
+                {
                     a += "2";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
+                }
                 else
                 {
                     a.clear();
                     a += "2";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
                     term = false;
-                    SetWindowText(hStatic, L"");
+                    SetWindowText(hStatic1, L"");
                 }
             }
             else
+            {
                 b += "2";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+            }
             break;
         case 14:
             if (condition == true)
             {
                 if (term == false)
+                {
                     a += "3";
+                    outputA();
+                }
                 else
                 {
                     a.clear();
                     a += "3";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
                     term = false;
-                    SetWindowText(hStatic, L"");
+                    SetWindowText(hStatic1, L"");
                 }
             }
             else
+            {
                 b += "3";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+            }
             break;
         case 16:
             if (condition == true)
             {
                 if (term == false)
+                {
                     a += "0";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
+                }
                 else
                 {
                     a.clear();
                     a += "0";
+                    outputA();
+                    memset(buffer, 0, sizeof(buffer));
                     term = false;
-                    SetWindowText(hStatic, L"");
+                    SetWindowText(hStatic1, L"");
                 }
             }
             else
+            {
                 b += "0";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+            }
             break;
             //добавление точки (запятой) к числу
         case 17:
@@ -495,6 +651,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                                     a += "0";
                                 }
                                 a += ".";
+                                outputA();
+                                memset(buffer, 0, sizeof(buffer));
                                 break;
                             }
                         }
@@ -508,6 +666,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                             a += "0";
                         }
                         a += ".";
+                        outputA();
+                        memset(buffer, 0, sizeof(buffer));
                         term = false;
                     }
                 }
@@ -518,6 +678,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         a += "0";
                     }
                     a += ".";
+                    outputB();
+                    memset(buffer, 0, sizeof(buffer));
                 }
             }
             else
@@ -538,6 +700,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                                 b += "0";
                             }
                             b += ".";
+                            outputB();
+                            memset(buffer, 0, sizeof(buffer));
                             break;
                         }
                     }
@@ -550,6 +714,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         b += "0";
                     }
                     b += ".";
+                    outputB();
+                    memset(buffer, 0, sizeof(buffer));
                 }
             }
             break;
@@ -559,7 +725,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             b.clear();
             sign = '\0';
             condition = true;
-            SetWindowText(hStatic, L"");
+            SetWindowText(hStatic1, L"");
+            SetWindowText(hStatic2, L"");
+            SetWindowText(hStatic3, L"");
+            SetWindowText(hStatic4, L"");
             break;
             //ввод знаков
         case 3:
@@ -569,6 +738,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 {
                     sign = '/';
                     condition = false;
+                    SetWindowText(hStatic3, L"/");
                 }
                 else
                 {
@@ -583,6 +753,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 {
                     sign = '*';
                     condition = false;
+                    SetWindowText(hStatic3, L"*");
                 }
                 else
                 {
@@ -597,6 +768,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 {
                     sign = '-';
                     condition = false;
+                    SetWindowText(hStatic3, L"-");
                 }
                 else
                 {
@@ -606,10 +778,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             else if (a == "")
             {
                 a += "-";
+                outputA();
+                memset(buffer, 0, sizeof(buffer));
+                term = false;
+                SetWindowText(hStatic1, L"");
             }
             else if (condition == false && b == "")
             {
                 b += "-";
+                outputB();
+                memset(buffer, 0, sizeof(buffer));
+                term = false;
+                SetWindowText(hStatic1, L"");
             }
             break;
         case 15:
@@ -619,6 +799,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 {
                     sign = '+';
                     condition = false;
+                    SetWindowText(hStatic3, L"+");
                 }
                 else
                 {
@@ -648,18 +829,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                                 found--;
                             }
                             strResult = strResult.substr(0, found + 1);
-                            for (int i = 0; i < strResult.length(); i++)
-                            {
-                                buffer[i] = strResult[i];
-                            }
-                            SetWindowTextA(hStatic, buffer);
+                            outputResult();
                             memset(buffer, 0, sizeof(buffer));
                         }
                         else
-                            SetWindowText(hStatic, L"0");
+                            SetWindowText(hStatic1, L"0");
                     }
                     else
-                        SetWindowText(hStatic, L"ERROR");
+                        SetWindowText(hStatic1, L"ERROR");
                     break;
                     //при умножении
                 case '*':
@@ -677,18 +854,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                                 found--;
                             }
                             strResult = strResult.substr(0, found + 1);
-                            for (int i = 0; i < strResult.length(); i++)
-                            {
-                                buffer[i] = strResult[i];
-                            }
-                            SetWindowTextA(hStatic, buffer);
+                            outputResult();
                             memset(buffer, 0, sizeof(buffer));
                         }
                         else
-                            SetWindowText(hStatic, L"0");
+                            SetWindowText(hStatic1, L"0");
                     }
                     else
-                        SetWindowText(hStatic, L"ERROR");
+                        SetWindowText(hStatic1, L"ERROR");
                     break;
                     //при разности
                 case '-':
@@ -704,15 +877,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                             found--;
                         }
                         strResult = strResult.substr(0, found + 1);
-                        for (int i = 0; i < strResult.length(); i++)
-                        {
-                            buffer[i] = strResult[i];
-                        }
-                        SetWindowTextA(hStatic, buffer);
+                        outputResult();
                         memset(buffer, 0, sizeof(buffer));
                     }
                     else
-                        SetWindowText(hStatic, L"ERROR");
+                        SetWindowText(hStatic1, L"ERROR");
                     break;
                     //при сложении
                 case '+':
@@ -728,15 +897,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                             found--;
                         }
                         strResult = strResult.substr(0, found + 1);
-                        for (int i = 0; i < strResult.length(); i++)
-                        {
-                            buffer[i] = strResult[i];
-                        }
-                        SetWindowTextA(hStatic, buffer);
+                        outputResult();
                         memset(buffer, 0, sizeof(buffer));
                     }
                     else
-                        SetWindowText(hStatic, L"ERROR");
+                        SetWindowText(hStatic1, L"ERROR");
                     break;
                 }
                 //сброс после вывода, первое число = итог
@@ -745,6 +910,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 sign = '\0';
                 condition = true;
                 term = true;
+                outputA();
+                memset(buffer, 0, sizeof(buffer));
+                SetWindowText(hStatic4, L"");
             }
             break;
         case 2:
