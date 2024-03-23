@@ -8,7 +8,7 @@
 //переменные, которые будем использовать
 std::string a = "", b = "", strResult; //первое число, второе, итог (строкой)
 double first, second, result;//первое число, второе, итог (числом)
-char sign, buffer[100]; //знак (/*-+), массив для вывода итога
+char sign, buffer[103]; //знак (/*-+), массив для вывода итога
 bool condition = true, term = false; //условие (введен ли знак), выводили ли уже результат
 int points = 0; //количество точек в числе
 size_t found; //номер последнего не нуля в строке
@@ -634,79 +634,109 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 {
                     //при делении
                 case '/':
-                    first = std::stod(a);
-                    second = std::stod(b);
-                    result = first / second;
-                    strResult = std::to_string(result);
-                    found = strResult.find_last_not_of('0');
-                    if (found != std::string::npos && strResult[found] == '.')
+                    if (a.length() <= 102 && b.length() <= 102)
                     {
-                        found--;
+                        first = std::stod(a);
+                        second = std::stod(b);
+                        result = first / second;
+                        if (result != -0)
+                        {
+                            strResult = std::to_string(result);
+                            found = strResult.find_last_not_of('0');
+                            if (found != std::string::npos && strResult[found] == '.')
+                            {
+                                found--;
+                            }
+                            strResult = strResult.substr(0, found + 1);
+                            for (int i = 0; i < strResult.length(); i++)
+                            {
+                                buffer[i] = strResult[i];
+                            }
+                            SetWindowTextA(hStatic, buffer);
+                            memset(buffer, 0, sizeof(buffer));
+                        }
+                        else
+                            SetWindowText(hStatic, L"0");
                     }
-                    strResult = strResult.substr(0, found + 1);
-                    for (int i = 0; i < strResult.length(); i++)
-                    {
-                        buffer[i] = strResult[i];
-                    }
-                    SetWindowTextA(hStatic, buffer);
-                    memset(buffer, 0, sizeof(buffer));
+                    else
+                        SetWindowText(hStatic, L"ERROR");
                     break;
                     //при умножении
                 case '*':
-                    first = std::stod(a);
-                    second = std::stod(b);
-                    result = first * second;
-                    strResult = std::to_string(result);
-                    found = strResult.find_last_not_of('0');
-                    if (found != std::string::npos && strResult[found] == '.')
+                    if (a.length() <= 102 && b.length() <= 102)
                     {
-                        found--;
+                        first = std::stod(a);
+                        second = std::stod(b);
+                        result = first * second;
+                        if (result != -0)
+                        {
+                            strResult = std::to_string(result);
+                            found = strResult.find_last_not_of('0');
+                            if (found != std::string::npos && strResult[found] == '.')
+                            {
+                                found--;
+                            }
+                            strResult = strResult.substr(0, found + 1);
+                            for (int i = 0; i < strResult.length(); i++)
+                            {
+                                buffer[i] = strResult[i];
+                            }
+                            SetWindowTextA(hStatic, buffer);
+                            memset(buffer, 0, sizeof(buffer));
+                        }
+                        else
+                            SetWindowText(hStatic, L"0");
                     }
-                    strResult = strResult.substr(0, found + 1);
-                    for (int i = 0; i < strResult.length(); i++)
-                    {
-                        buffer[i] = strResult[i];
-                    }
-                    SetWindowTextA(hStatic, buffer);
-                    memset(buffer, 0, sizeof(buffer));
+                    else
+                        SetWindowText(hStatic, L"ERROR");
                     break;
                     //при разности
                 case '-':
-                    first = std::stod(a);
-                    second = std::stod(b);
-                    result = first - second;
-                    strResult = std::to_string(result);
-                    found = strResult.find_last_not_of('0');
-                    if (found != std::string::npos && strResult[found] == '.')
+                    if (a.length() <= 102 && b.length() <= 102)
                     {
-                        found--;
+                        first = std::stod(a);
+                        second = std::stod(b);
+                        result = first - second;
+                        strResult = std::to_string(result);
+                        found = strResult.find_last_not_of('0');
+                        if (found != std::string::npos && strResult[found] == '.')
+                        {
+                            found--;
+                        }
+                        strResult = strResult.substr(0, found + 1);
+                        for (int i = 0; i < strResult.length(); i++)
+                        {
+                            buffer[i] = strResult[i];
+                        }
+                        SetWindowTextA(hStatic, buffer);
+                        memset(buffer, 0, sizeof(buffer));
                     }
-                    strResult = strResult.substr(0, found + 1);
-                    for (int i = 0; i < strResult.length(); i++)
-                    {
-                        buffer[i] = strResult[i];
-                    }
-                    SetWindowTextA(hStatic, buffer);
-                    memset(buffer, 0, sizeof(buffer));
+                    else
+                        SetWindowText(hStatic, L"ERROR");
                     break;
                     //при сложении
                 case '+':
-                    first = std::stod(a);
-                    second = std::stod(b);
-                    result = first + second;
-                    strResult = std::to_string(result);
-                    found = strResult.find_last_not_of('0');
-                    if (found != std::string::npos && strResult[found] == '.')
+                    if (a.length() <= 102 && b.length() <= 102)
                     {
-                        found--;
+                        first = std::stod(a);
+                        second = std::stod(b);
+                        result = first + second;
+                        strResult = std::to_string(result);
+                        found = strResult.find_last_not_of('0');
+                        if (found != std::string::npos && strResult[found] == '.')
+                        {
+                            found--;
+                        }
+                        strResult = strResult.substr(0, found + 1);
+                        for (int i = 0; i < strResult.length(); i++)
+                        {
+                            buffer[i] = strResult[i];
+                        }
+                        SetWindowTextA(hStatic, buffer);
+                        memset(buffer, 0, sizeof(buffer));
                     }
-                    strResult = strResult.substr(0, found + 1);
-                    for (int i = 0; i < strResult.length(); i++)
-                    {
-                        buffer[i] = strResult[i];
-                    }
-                    SetWindowTextA(hStatic, buffer);
-                    memset(buffer, 0, sizeof(buffer));
+                    else
+                        SetWindowText(hStatic, L"ERROR");
                     break;
                 }
                 //сброс после вывода, первое число = итог
