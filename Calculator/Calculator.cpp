@@ -634,7 +634,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 {
                     //при делении
                 case '/':
-                    if (a.length() <= 102 && b.length() <= 102)
+                    if (a.length() <= 102 && b.length() <= 102 && b != "0")
                     {
                         first = std::stod(a);
                         second = std::stod(b);
