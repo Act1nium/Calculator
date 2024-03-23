@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <tchar.h>
-#include <iostream>
 #include <string>
 
 static HWND hStatic1, hStatic2, hStatic3, hStatic4; //лейблы для result, a, sign, b
