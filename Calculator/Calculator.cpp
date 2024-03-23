@@ -43,6 +43,18 @@ void outputResult()
     SetWindowTextA(hStatic1, buffer);
 }
 
+//удаление нулей
+void removingZeros()
+{
+    strResult = std::to_string(result);
+    found = strResult.find_last_not_of('0');
+    if (found != std::string::npos && strResult[found] == '.')
+    {
+        found--;
+    }
+    strResult = strResult.substr(0, found + 1);
+}
+
 static TCHAR szWindowClass[] = _T("DesktopApp");
 static TCHAR szTitle[] = _T("Calculator");
 
@@ -822,13 +834,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         result = first / second;
                         if (result != -0)
                         {
-                            strResult = std::to_string(result);
-                            found = strResult.find_last_not_of('0');
-                            if (found != std::string::npos && strResult[found] == '.')
-                            {
-                                found--;
-                            }
-                            strResult = strResult.substr(0, found + 1);
+                            removingZeros();
                             outputResult();
                             memset(buffer, 0, sizeof(buffer));
                         }
@@ -847,13 +853,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         result = first * second;
                         if (result != -0)
                         {
-                            strResult = std::to_string(result);
-                            found = strResult.find_last_not_of('0');
-                            if (found != std::string::npos && strResult[found] == '.')
-                            {
-                                found--;
-                            }
-                            strResult = strResult.substr(0, found + 1);
+                            removingZeros();
                             outputResult();
                             memset(buffer, 0, sizeof(buffer));
                         }
@@ -870,13 +870,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         first = std::stod(a);
                         second = std::stod(b);
                         result = first - second;
-                        strResult = std::to_string(result);
-                        found = strResult.find_last_not_of('0');
-                        if (found != std::string::npos && strResult[found] == '.')
-                        {
-                            found--;
-                        }
-                        strResult = strResult.substr(0, found + 1);
+                        removingZeros();
                         outputResult();
                         memset(buffer, 0, sizeof(buffer));
                     }
@@ -890,13 +884,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         first = std::stod(a);
                         second = std::stod(b);
                         result = first + second;
-                        strResult = std::to_string(result);
-                        found = strResult.find_last_not_of('0');
-                        if (found != std::string::npos && strResult[found] == '.')
-                        {
-                            found--;
-                        }
-                        strResult = strResult.substr(0, found + 1);
+                        removingZeros();
                         outputResult();
                         memset(buffer, 0, sizeof(buffer));
                     }
