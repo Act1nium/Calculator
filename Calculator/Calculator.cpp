@@ -8,7 +8,7 @@
 //переменные, которые будем использовать
 std::string a = "", b = "", strResult; //первое число, второе, итог (строкой)
 double first, second, result;//первое число, второе, итог (числом)
-char sign, buffer[32]; //знак (/*-+), массив для вывода итога
+char sign, buffer[100]; //знак (/*-+), массив для вывода итога
 bool condition = true, term = false; //условие (введен ли знак), выводили ли уже результат
 int points = 0; //количество точек в числе
 size_t found; //номер последнего не нуля в строке
@@ -490,7 +490,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                             }
                             if (i == a.length() - 1 && points == 0)
                             {
-                                a += "0";
+                                if (a == "")
+                                {
+                                    a += "0";
+                                }
                                 a += ".";
                                 break;
                             }
@@ -500,14 +503,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     else
                     {
                         a.clear();
-                        a += "0";
+                        if (a == "")
+                        {
+                            a += "0";
+                        }
                         a += ".";
                         term = false;
                     }
                 }
                 else
-                    a += "0";
+                {
+                    if (a == "")
+                    {
+                        a += "0";
+                    }
                     a += ".";
+                }
             }
             else
             {
@@ -522,7 +533,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         }
                         if (i == b.length() - 1 && points == 0)
                         {
-                            b += "0";
+                            if (b == "")
+                            {
+                                b += "0";
+                            }
                             b += ".";
                             break;
                         }
@@ -530,8 +544,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     points = 0;
                 }
                 else
-                    b += "0";
+                {
+                    if (b == "")
+                    {
+                        b += "0";
+                    }
                     b += ".";
+                }
             }
             break;
             //сброс
