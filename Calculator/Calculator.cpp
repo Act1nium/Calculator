@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-static HWND hStatic1, hStatic2, hStatic3, hStatic4; //лейблы для: result, a, sign, b
+static HWND hStatic1, hStatic2, hStatic3, hStatic4; //лейблы для result, a, sign, b
 //переменные, которые будем использовать
 std::string a = "", b = "", strResult; //первое число, второе, итог (строкой)
 double first, second, result;//первое число, второе, итог (числом)
