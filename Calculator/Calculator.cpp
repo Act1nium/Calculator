@@ -4,7 +4,8 @@
 #include <tchar.h>
 #include <string>
 
-static HWND hStatic1, hStatic2, hStatic3, hStatic4; //лейблы для result, a, sign, b
+//лейблы для result, a, sign, b, промежуточного результата
+static HWND hStatic1, hStatic2, hStatic3, hStatic4, hStatic5;
 //переменные, которые будем использовать
 std::string a = "", b = "", strResult; //первое число, второе, итог (строкой)
 double first, second, result;//первое число, второе, итог (числом)
@@ -12,6 +13,18 @@ char sign, buffer[103]; //знак (/*-+), массив для вывода чи
 bool condition = true, term = false; //условие (введен ли знак), выводили ли уже результат
 int points = 0; //количество точек в числе
 size_t found; //номер последнего не нуля в строке
+
+//удаление нулей
+void removingZeros()
+{
+    strResult = std::to_string(result);
+    found = strResult.find_last_not_of('0');
+    if (found != std::string::npos && strResult[found] == '.')
+    {
+        found--;
+    }
+    strResult = strResult.substr(0, found + 1);
+}
 
 //вывод чисел при вводе
 void outputA()
@@ -45,16 +58,94 @@ void outputResult()
     memset(buffer, 0, sizeof(buffer));
 }
 
-//удаление нулей
-void removingZeros()
+//вывод промежуточного результата
+void outputIntermediateResult()
 {
-    strResult = std::to_string(result);
-    found = strResult.find_last_not_of('0');
-    if (found != std::string::npos && strResult[found] == '.')
+    switch (sign)
     {
-        found--;
+        //при делении
+    case '/':
+        if (a.length() <= 102 && b.length() <= 102 && b != "0" && b != "-0")
+        {
+            first = std::stod(a);
+            second = std::stod(b);
+            result = first / second;
+            if (result != -0)
+            {
+                removingZeros();
+                for (int i = 0; i < strResult.length(); i++)
+                {
+                    buffer[i] = strResult[i];
+                }
+                SetWindowTextA(hStatic5, buffer);
+                memset(buffer, 0, sizeof(buffer));
+            }
+            else
+                SetWindowText(hStatic5, L"0");
+        }
+        else
+            SetWindowText(hStatic5, L"ERROR");
+        break;
+        //при умножении
+    case '*':
+        if (a.length() <= 102 && b.length() <= 102)
+        {
+            first = std::stod(a);
+            second = std::stod(b);
+            result = first * second;
+            if (result != -0)
+            {
+                removingZeros();
+                for (int i = 0; i < strResult.length(); i++)
+                {
+                    buffer[i] = strResult[i];
+                }
+                SetWindowTextA(hStatic5, buffer);
+                memset(buffer, 0, sizeof(buffer));
+            }
+            else
+                SetWindowText(hStatic5, L"0");
+        }
+        else
+            SetWindowText(hStatic5, L"ERROR");
+        break;
+        //при разности
+    case '-':
+        if (a.length() <= 102 && b.length() <= 102)
+        {
+            first = std::stod(a);
+            second = std::stod(b);
+            result = first - second;
+            removingZeros();
+            for (int i = 0; i < strResult.length(); i++)
+            {
+                buffer[i] = strResult[i];
+            }
+            SetWindowTextA(hStatic5, buffer);
+            memset(buffer, 0, sizeof(buffer));
+        }
+        else
+            SetWindowText(hStatic5, L"ERROR");
+        break;
+        //при сложении
+    case '+':
+        if (a.length() <= 102 && b.length() <= 102)
+        {
+            first = std::stod(a);
+            second = std::stod(b);
+            result = first + second;
+            removingZeros();
+            for (int i = 0; i < strResult.length(); i++)
+            {
+                buffer[i] = strResult[i];
+            }
+            SetWindowTextA(hStatic5, buffer);
+            memset(buffer, 0, sizeof(buffer));
+        }
+        else
+            SetWindowText(hStatic5, L"ERROR");
+        break;
     }
-    strResult = strResult.substr(0, found + 1);
 }
 
 static TCHAR szWindowClass[] = _T("DesktopApp");
@@ -383,6 +474,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         ShowWindow(hStatic4, SW_SHOW);
         UpdateWindow(hStatic4);
 
+        hStatic5 = CreateWindowEx(
+            WS_EX_TRANSPARENT, TEXT("Static"),
+            TEXT(""), WS_CHILD | SS_CENTERIMAGE | WS_EX_LAYERED,
+            10, 30, 175, 20,
+            hWnd, NULL,
+            hInst, NULL
+        );
+        SetLayeredWindowAttributes(hStatic5, RGB(0, 0, 0), 128, LWA_ALPHA);
+        ShowWindow(hStatic5, SW_SHOW);
+        UpdateWindow(hStatic5);
+
     case WM_COMMAND: {
         //ввод первого и второго чисел строкой посимвольно
         switch (LOWORD(wParam))
@@ -408,6 +510,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b += "7";
                 outputB();
+                outputIntermediateResult();
             }
             break;
         case 5:
@@ -431,6 +534,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b += "8";
                 outputB();
+                outputIntermediateResult();
             }
             break;
         case 6:
@@ -454,6 +558,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b += "9";
                 outputB();
+                outputIntermediateResult();
             }
             break;
         case 8:
@@ -477,6 +582,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b += "4";
                 outputB();
+                outputIntermediateResult();
             }
             break;
         case 9:
@@ -500,6 +606,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b += "5";
                 outputB();
+                outputIntermediateResult();
             }
             break;
         case 10:
@@ -523,6 +630,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b += "6";
                 outputB();
+                outputIntermediateResult();
             }
             break;
         case 12:
@@ -546,6 +654,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b += "1";
                 outputB();
+                outputIntermediateResult();
             }
             break;
         case 13:
@@ -569,6 +678,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b += "2";
                 outputB();
+                outputIntermediateResult();
             }
             break;
         case 14:
@@ -592,6 +702,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b += "3";
                 outputB();
+                outputIntermediateResult();
             }
             break;
         case 16:
@@ -615,6 +726,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b += "0";
                 outputB();
+                outputIntermediateResult();
             }
             break;
             //добавление точки (запятой) к числу
@@ -685,6 +797,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                             }
                             b += ".";
                             outputB();
+                            outputIntermediateResult();
                             break;
                         }
                     }
@@ -698,6 +811,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     }
                     b += ".";
                     outputB();
+                    outputIntermediateResult();
                 }
             }
             break;
@@ -711,6 +825,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             SetWindowText(hStatic2, L"");
             SetWindowText(hStatic3, L"");
             SetWindowText(hStatic4, L"");
+            SetWindowText(hStatic5, L"");
             break;
             //ввод знаков
         case 3:
@@ -880,6 +995,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 a.pop_back();
                 outputA();
+                SetWindowText(hStatic1, L"");
             }
             else if (b == "" && sign != '\0')
             {
@@ -891,6 +1007,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b.pop_back();
                 outputB();
+                if (b != "")
+                {
+                    outputIntermediateResult();
+                }
             }
         }
     }
