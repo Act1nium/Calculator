@@ -996,6 +996,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 a.pop_back();
                 outputA();
                 SetWindowText(hStatic1, L"");
+                term = false;
             }
             else if (b == "" && sign != '\0')
             {
