@@ -3,14 +3,15 @@
 #include <string.h>
 #include <tchar.h>
 #include <string>
+#include <vector>
 
-//лейблы для result, a, sign, b, промежуточного результата
-static HWND hStatic1, hStatic2, hStatic3, hStatic4, hStatic5;
+//лейблы для result; a, sign, b (выражения)
+static HWND hStaticResult, hStaticExpression;
 //переменные, которые будем использовать
-std::string a = "", b = "", strResult; //первое число, второе, итог (строкой)
-double first, second, result;//первое число, второе, итог (числом)
-char sign, buffer[103]; //знак (/*-+), массив для вывода чисел
-bool condition = true, term = false; //условие (введен ли знак), выводили ли уже результат
+std::string a = "", b = "", expression = "", strResult; //первое число; второе; итог (строкой)
+double first, second, result;//первое число; второе число; итог (числом)
+char sign, buffer[256]; //знак (/*-+); массив для вывода чисел
+bool condition = false, term = false; //условие (введен ли знак); выводили ли уже результат
 int points = 0; //количество точек в числе
 size_t found; //номер последнего не нуля в строке
 
@@ -26,37 +27,17 @@ void removingZeros()
     strResult = strResult.substr(0, found + 1);
 }
 
-//вывод чисел при вводе
-void outputA()
-{
-    for (int i = 0; i < a.length(); i++)
+//вывод выражения при вводе
+ void outputExpression()
+ {
+    expression = a + sign + b;
+    for (int i = 0; i < expression.length(); i++)
     {
-        buffer[i] = a[i];
+        buffer[i] = expression[i];
     }
-    SetWindowTextA(hStatic2, buffer);
+    SetWindowTextA(hStaticExpression, buffer);
     memset(buffer, 0, sizeof(buffer));
-}
-
-void outputB()
-{
-    for (int i = 0; i < b.length(); i++)
-    {
-        buffer[i] = b[i];
-    }
-    SetWindowTextA(hStatic4, buffer);
-    memset(buffer, 0, sizeof(buffer));
-}
-
-//вывод результата
-void outputResult()
-{
-    for (int i = 0; i < strResult.length(); i++)
-    {
-        buffer[i] = strResult[i];
-    }
-    SetWindowTextA(hStatic1, buffer);
-    memset(buffer, 0, sizeof(buffer));
-}
+ }
 
 //вывод промежуточного результата
 void outputIntermediateResult()
@@ -65,53 +46,59 @@ void outputIntermediateResult()
     {
         //при делении
     case '/':
-        if (a.length() <= 102 && b.length() <= 102 && b != "0" && b != "-0")
+        if (a.length() <= 255 && b.length() <= 255 && std::stod(b) != 0)
         {
             first = std::stod(a);
             second = std::stod(b);
             result = first / second;
-            if (result != -0)
+            if (result != -(0))
             {
                 removingZeros();
                 for (int i = 0; i < strResult.length(); i++)
                 {
                     buffer[i] = strResult[i];
                 }
-                SetWindowTextA(hStatic5, buffer);
+                SetWindowTextA(hStaticResult, buffer);
                 memset(buffer, 0, sizeof(buffer));
             }
             else
-                SetWindowText(hStatic5, L"0");
+                SetWindowText(hStaticResult, L"0");
         }
         else
-            SetWindowText(hStatic5, L"ERROR");
+            SetWindowText(hStaticResult, L"ERROR");
         break;
         //при умножении
     case '*':
-        if (a.length() <= 102 && b.length() <= 102)
+        if (a.length() <= 255 && b.length() <= 255)
         {
             first = std::stod(a);
+            if (b != "-")
             second = std::stod(b);
+            else
+            {
+                SetWindowText(hStaticResult, L"");
+                break;
+            }
             result = first * second;
-            if (result != -0)
+            if (result != -(0))
             {
                 removingZeros();
                 for (int i = 0; i < strResult.length(); i++)
                 {
                     buffer[i] = strResult[i];
                 }
-                SetWindowTextA(hStatic5, buffer);
+                SetWindowTextA(hStaticResult, buffer);
                 memset(buffer, 0, sizeof(buffer));
             }
             else
-                SetWindowText(hStatic5, L"0");
+                SetWindowText(hStaticResult, L"0");
         }
         else
-            SetWindowText(hStatic5, L"ERROR");
+            SetWindowText(hStaticResult, L"ERROR");
         break;
         //при разности
     case '-':
-        if (a.length() <= 102 && b.length() <= 102)
+        if (a.length() <= 255 && b.length() <= 255)
         {
             first = std::stod(a);
             second = std::stod(b);
@@ -121,15 +108,15 @@ void outputIntermediateResult()
             {
                 buffer[i] = strResult[i];
             }
-            SetWindowTextA(hStatic5, buffer);
+            SetWindowTextA(hStaticResult, buffer);
             memset(buffer, 0, sizeof(buffer));
         }
         else
-            SetWindowText(hStatic5, L"ERROR");
+            SetWindowText(hStaticResult, L"ERROR");
         break;
         //при сложении
     case '+':
-        if (a.length() <= 102 && b.length() <= 102)
+        if (a.length() <= 255 && b.length() <= 255)
         {
             first = std::stod(a);
             second = std::stod(b);
@@ -139,12 +126,28 @@ void outputIntermediateResult()
             {
                 buffer[i] = strResult[i];
             }
-            SetWindowTextA(hStatic5, buffer);
+            SetWindowTextA(hStaticResult, buffer);
             memset(buffer, 0, sizeof(buffer));
         }
         else
-            SetWindowText(hStatic5, L"ERROR");
+            SetWindowText(hStaticResult, L"ERROR");
         break;
+    case '^':
+        if (a.length() <= 255 && b.length() <= 255)
+        {
+            first = std::stod(a);
+            second = std::stod(b);
+            result = pow(first, second);
+            removingZeros();
+            for (int i = 0; i < strResult.length(); i++)
+            {
+                buffer[i] = strResult[i];
+            }
+            SetWindowTextA(hStaticResult, buffer);
+            memset(buffer, 0, sizeof(buffer));
+        }
+        else
+            SetWindowText(hStaticResult, L"ERROR");
     }
 }
 
@@ -198,6 +201,8 @@ int WINAPI WinMain(
         NULL
     );
 
+    SetWindowLongPtr(hWnd, GWL_STYLE, GetWindowLongPtr(hWnd, GWL_STYLE) & ~WS_MAXIMIZEBOX); //отключение возможности открытия окна на весь окран
+
     if (!hWnd) {
         MessageBox(NULL, _T("Call to CreateWindow failed!"),
             _T("Windows Desktop"), NULL);
@@ -248,7 +253,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         HWND hButton1;
         hButton1 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
-            TEXT("<-"), WS_CHILD,
+            TEXT("⌫"), WS_CHILD,
             100, 55, 40, 40,
             hWnd, reinterpret_cast<HMENU>(2),
             NULL, NULL
@@ -413,7 +418,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         HWND hButton16;
         hButton16 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
-            TEXT(","), WS_CHILD,
+            TEXT("."), WS_CHILD,
             100, 235, 40, 40,
             hWnd, reinterpret_cast<HMENU>(17),
             NULL, NULL
@@ -432,306 +437,366 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         ShowWindow(hButton17, SW_SHOW);
         UpdateWindow(hButton17);
 
+        HWND hButton18;
+        hButton18 = CreateWindowEx(
+            WS_EX_TRANSPARENT, TEXT("Button"),
+            TEXT("^"), WS_CHILD,
+            55, 55, 40, 40,
+            hWnd, reinterpret_cast<HMENU>(19),
+            NULL, NULL
+        );
+        ShowWindow(hButton18, SW_SHOW);
+        UpdateWindow(hButton18);
+
         //текстовое поле для вывода ответа
-        hStatic1 = CreateWindowEx(
+        hStaticResult = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Static"),
-            TEXT(""), WS_CHILD | SS_CENTERIMAGE,
+            TEXT(""), WS_CHILD | SS_CENTERIMAGE | WS_DISABLED | ES_RIGHT,
             10, 30, 175, 20,
             hWnd, NULL,
             hInst, NULL
         );
-        ShowWindow(hStatic1, SW_SHOW);
-        UpdateWindow(hStatic1);
+        ShowWindow(hStaticResult, SW_SHOW);
+        UpdateWindow(hStaticResult);
 
-        //текстовые поля для вывода a, sign и b
-        hStatic2 = CreateWindowEx(
+        //текстовое поле для вывода a, sign и b (выражения)
+        hStaticExpression = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Static"),
             TEXT(""), WS_CHILD | ES_RIGHT | SS_CENTERIMAGE,
-            10, 10, 80, 20,
+            10, 10, 175, 20,
             hWnd, NULL,
             hInst, NULL
         );
-        ShowWindow(hStatic2, SW_SHOW);
-        UpdateWindow(hStatic2);
-
-        hStatic3 = CreateWindowEx(
-            WS_EX_TRANSPARENT, TEXT("Static"),
-            TEXT(""), WS_CHILD | SS_CENTERIMAGE | ES_CENTER,
-            90, 10, 15, 20,
-            hWnd, NULL,
-            hInst, NULL
-        );
-        ShowWindow(hStatic3, SW_SHOW);
-        UpdateWindow(hStatic3);
-
-        hStatic4 = CreateWindowEx(
-            WS_EX_TRANSPARENT, TEXT("Static"),
-            TEXT(""), WS_CHILD | ES_RIGHT | SS_CENTERIMAGE,
-            105, 10, 80, 20,
-            hWnd, NULL,
-            hInst, NULL
-        );
-        ShowWindow(hStatic4, SW_SHOW);
-        UpdateWindow(hStatic4);
-
-        hStatic5 = CreateWindowEx(
-            WS_EX_TRANSPARENT, TEXT("Static"),
-            TEXT(""), WS_CHILD | SS_CENTERIMAGE | WS_EX_LAYERED,
-            10, 30, 175, 20,
-            hWnd, NULL,
-            hInst, NULL
-        );
-        SetLayeredWindowAttributes(hStatic5, RGB(0, 0, 0), 128, LWA_ALPHA);
-        ShowWindow(hStatic5, SW_SHOW);
-        UpdateWindow(hStatic5);
+        ShowWindow(hStaticExpression, SW_SHOW);
+        UpdateWindow(hStaticExpression);
 
     case WM_COMMAND: {
         //ввод первого и второго чисел строкой посимвольно
         switch (LOWORD(wParam))
         {
         case 4:
-            if (condition == true)
+            if (condition == false)
             {
-                if (term == false)
+                if (a != "0")
                 {
-                    a += "7";
-                    outputA();
+                    if (term == false)
+                        a += "7";
+                    else
+                    {
+                        a.clear();
+                        a += "7";
+                        term = false;
+                        
+                    }
                 }
                 else
-                {
-                    a.clear();
-                    a += "7";
-                    outputA();
-                    term = false;
-                    SetWindowText(hStatic1, L"");
-                }
+                    a = "7";
             }
             else
             {
-                b += "7";
-                outputB();
+                if (b != "0")
+                    b += "7";
+                else
+                    b = "7";
                 outputIntermediateResult();
             }
+            outputExpression();
             break;
         case 5:
-            if (condition == true)
+            if (condition == false)
             {
-                if (term == false)
+                if (a != "0")
                 {
-                    a += "8";
-                    outputA();
+                    if (term == false)
+                        a += "8";
+                    else
+                    {
+                        a.clear();
+                        a += "8";
+                        term = false;
+                        SetWindowText(hStaticResult, L"");
+                    }
                 }
                 else
-                {
-                    a.clear();
-                    a += "8";
-                    outputA();
-                    term = false;
-                    SetWindowText(hStatic1, L"");
-                }
+                    a = "8";
             }
             else
             {
-                b += "8";
-                outputB();
+                if (b != "0")
+                    b += "8";
+                else
+                    b = "8";
                 outputIntermediateResult();
             }
+            outputExpression();
             break;
         case 6:
-            if (condition == true)
+            if (condition == false)
             {
-                if (term == false)
+                if (a != "0")
                 {
-                    a += "9";
-                    outputA();
+                    if (term == false)
+                        a += "9";
+                    else
+                    {
+                        a.clear();
+                        a += "9";
+                        term = false;
+                        SetWindowText(hStaticResult, L"");
+                    }
                 }
                 else
-                {
-                    a.clear();
-                    a += "9";
-                    outputA();
-                    term = false;
-                    SetWindowText(hStatic1, L"");
-                }
+                    a = "9";
             }
             else
             {
-                b += "9";
-                outputB();
+                if (b != "0")
+                    b += "9";
+                else
+                    b = "9";
                 outputIntermediateResult();
             }
+            outputExpression();
             break;
         case 8:
-            if (condition == true)
+            if (condition == false)
             {
-                if (term == false)
+                if (a != "0")
                 {
-                    a += "4";
-                    outputA();
+                    if (term == false)
+                        a += "4";
+                    else
+                    {
+                        a.clear();
+                        a += "4";
+                        term = false;
+                        SetWindowText(hStaticResult, L"");
+                    }
                 }
                 else
-                {
-                    a.clear();
-                    a += "4";
-                    outputA();
-                    term = false;
-                    SetWindowText(hStatic1, L"");
-                }
+                    a = "4";
             }
             else
             {
-                b += "4";
-                outputB();
+                if (b != "0")
+                    b += "4";
+                else
+                    b = "4";
                 outputIntermediateResult();
             }
+            outputExpression();
             break;
         case 9:
-            if (condition == true)
+            if (condition == false)
             {
-                if (term == false)
+                if (a != "0")
                 {
-                    a += "5";
-                    outputA();
+                    if (term == false)
+                        a += "5";
+                    else
+                    {
+                        a.clear();
+                        a += "5";
+                        term = false;
+                        SetWindowText(hStaticResult, L"");
+                    }
                 }
                 else
-                {
-                    a.clear();
-                    a += "5";
-                    outputA();
-                    term = false;
-                    SetWindowText(hStatic1, L"");
-                }
+                    a = "5";
             }
             else
             {
-                b += "5";
-                outputB();
+                if (b != "0")
+                    b += "5";
+                else
+                    b = "5";
                 outputIntermediateResult();
             }
+            outputExpression();
             break;
         case 10:
-            if (condition == true)
+            if (condition == false)
             {
-                if (term == false)
+                if (a != "0")
                 {
-                    a += "6";
-                    outputA();
+                    if (term == false)
+                        a += "6";
+                    else
+                    {
+                        a.clear();
+                        a += "6";
+                        term = false;
+                        SetWindowText(hStaticResult, L"");
+                    }
                 }
                 else
-                {
-                    a.clear();
-                    a += "6";
-                    outputA();
-                    term = false;
-                    SetWindowText(hStatic1, L"");
-                }
+                    a = "6";
             }
             else
             {
-                b += "6";
-                outputB();
+                if (b != "0")
+                    b += "6";
+                else
+                    b = "6";
                 outputIntermediateResult();
             }
+            outputExpression();
             break;
         case 12:
-            if (condition == true)
+            if (condition == false)
             {
-                if (term == false)
+                if (a != "0")
                 {
-                    a += "1";
-                    outputA();
+                    if (term == false)
+                        a += "1";
+                    else
+                    {
+                        a.clear();
+                        a += "1";
+                        term = false;
+                        SetWindowText(hStaticResult, L"");
+                    }
                 }
                 else
-                {
-                    a.clear();
-                    a += "1";
-                    outputA();
-                    term = false;
-                    SetWindowText(hStatic1, L"");
-                }
+                    a = "1";
             }
             else
             {
-                b += "1";
-                outputB();
+                if (b != "0")
+                    b += "1";
+                else
+                    b = "1";
                 outputIntermediateResult();
             }
+            outputExpression();
             break;
         case 13:
-            if (condition == true)
+            if (condition == false)
             {
-                if (term == false)
+                if (a != "0")
                 {
-                    a += "2";
-                    outputA();
+                    if (term == false)
+                        a += "2";
+                    else
+                    {
+                        a.clear();
+                        a += "2";
+                        term = false;
+                        SetWindowText(hStaticResult, L"");
+                    }
                 }
                 else
-                {
-                    a.clear();
-                    a += "2";
-                    outputA();
-                    term = false;
-                    SetWindowText(hStatic1, L"");
-                }
+                    a = "2";
             }
             else
             {
-                b += "2";
-                outputB();
+                if (b != "0")
+                    b += "2";
+                else
+                    b = "2";
                 outputIntermediateResult();
             }
+            outputExpression();
             break;
         case 14:
-            if (condition == true)
+            if (condition == false)
             {
-                if (term == false)
+                if (a != "0")
                 {
-                    a += "3";
-                    outputA();
+                    if (term == false)
+                        a += "3";
+                    else
+                    {
+                        a.clear();
+                        a += "3";
+                        term = false;
+                        SetWindowText(hStaticResult, L"");
+                    }
                 }
                 else
-                {
-                    a.clear();
-                    a += "3";
-                    outputA();
-                    term = false;
-                    SetWindowText(hStatic1, L"");
-                }
+                    a = "3";
             }
             else
             {
-                b += "3";
-                outputB();
+                if (b != "0")
+                    b += "3";
+                else
+                    b = "3";
                 outputIntermediateResult();
             }
+            outputExpression();
             break;
         case 16:
-            if (condition == true)
+            if (condition == false)
             {
                 if (term == false)
                 {
-                    a += "0";
-                    outputA();
+                    if (a != "")
+                    {
+                        for (int i = 0; i < a.length(); i++)
+                        {
+                            if (a[i] == '.')
+                                points += 1;
+                            if (i == a.length() - 1 && (points == 1 || a == "-"))
+                            {
+                                a += "0";
+                                outputExpression();
+                                points = 0;
+                                break;
+                            }
+                            else if (i == a.length() - 1 && (points == 1 || std::stod(a) != 0))
+                            {
+                                a += "0";
+                                outputExpression();
+                                points = 0;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        a += "0";
+                        outputExpression();
+                    }
                 }
                 else
                 {
                     a.clear();
                     a += "0";
-                    outputA();
+                    outputExpression();
                     term = false;
-                    SetWindowText(hStatic1, L"");
+                    SetWindowText(hStaticResult, L"");
                 }
             }
             else
             {
-                b += "0";
-                outputB();
-                outputIntermediateResult();
+                if (b != "")
+                {
+                    for (int i = 0; i < b.length(); i++)
+                    {
+                        if (b[i] == '.')
+                            points += 1;
+                        if (i == b.length() - 1 && (points == 1 || std::stod(a) != 0))
+                        {
+                            b += "0";
+                            outputExpression();
+                            outputIntermediateResult();
+                            points = 0;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    b += "0";
+                    outputExpression();
+                    outputIntermediateResult();
+                }
             }
             break;
-            //добавление точки (запятой) к числу
+            //добавление точки к числу
         case 17:
-            if (condition == true)
+            if (condition == false)
             {
                 if (a != "")
                 {
@@ -740,17 +805,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         for (int i = 0; i < a.length(); i++)
                         {
                             if (a[i] == '.')
-                            {
                                 points += 1;
-                            }
                             if (i == a.length() - 1 && points == 0)
                             {
-                                if (a == "")
-                                {
+                                if (a == "" || a == "-")
                                     a += "0";
-                                }
                                 a += ".";
-                                outputA();
+                                outputExpression();
                                 break;
                             }
                         }
@@ -760,22 +821,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     {
                         a.clear();
                         if (a == "")
-                        {
                             a += "0";
-                        }
                         a += ".";
-                        outputA();
+                        outputExpression();
                         term = false;
                     }
                 }
                 else
                 {
                     if (a == "")
-                    {
                         a += "0";
-                    }
                     a += ".";
-                    outputB();
+                    term = false;
+                    SetWindowText(hStaticResult, L"");
+                    outputExpression();
                 }
             }
             else
@@ -791,12 +850,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         }
                         if (i == b.length() - 1 && points == 0)
                         {
-                            if (b == "")
-                            {
+                            if (b == "" || b == "-")
                                 b += "0";
-                            }
                             b += ".";
-                            outputB();
+                            outputExpression();
                             outputIntermediateResult();
                             break;
                         }
@@ -806,11 +863,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 else
                 {
                     if (b == "")
-                    {
                         b += "0";
-                    }
                     b += ".";
-                    outputB();
+                    outputExpression();
                     outputIntermediateResult();
                 }
             }
@@ -820,27 +875,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             a.clear();
             b.clear();
             sign = '\0';
-            condition = true;
-            SetWindowText(hStatic1, L"");
-            SetWindowText(hStatic2, L"");
-            SetWindowText(hStatic3, L"");
-            SetWindowText(hStatic4, L"");
-            SetWindowText(hStatic5, L"");
+            condition = false;
+            SetWindowText(hStaticResult, L"");
+            SetWindowText(hStaticExpression, L"");
+            SetWindowText(hStaticResult, L"");
             break;
-            //ввод знаков
+            //ввод знаков (действий)
         case 3:
             if (a != "" && b == "")
             {
                 if (a != "-")
                 {
                     sign = '/';
-                    condition = false;
-                    SetWindowText(hStatic3, L"/");
-                    SetWindowText(hStatic1, L"");
-                }
-                else
-                {
-                    a.clear();
+                    condition = true;
+                    outputExpression();
+                    SetWindowText(hStaticResult, L"");
                 }
             }
             break;
@@ -850,45 +899,39 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 if (a != "-")
                 {
                     sign = '*';
-                    condition = false;
-                    SetWindowText(hStatic3, L"*");
-                    SetWindowText(hStatic1, L"");
-                }
-                else
-                {
-                    a.clear();
+                    condition = true;
+                    outputExpression();
+                    SetWindowText(hStaticResult, L"");
                 }
             }
             break;
         case 11:
-            if (a != "" && condition == true)
+            if (a != "" && condition == false)
             {
                 if (a != "-")
                 {
                     sign = '-';
-                    condition = false;
-                    SetWindowText(hStatic3, L"-");
-                    SetWindowText(hStatic1, L"");
-                }
-                else
-                {
-                    a.clear();
+                    condition = true;
+                    outputExpression();
+                    SetWindowText(hStaticResult, L"");
                 }
             }
             else if (a == "")
             {
                 a += "-";
-                outputA();
+                outputExpression();
                 term = false;
-                SetWindowText(hStatic1, L"");
+                SetWindowText(hStaticResult, L"");
             }
-            else if (condition == false && b == "")
+            else if (condition == true && b == "")
             {
                 b += "-";
-                outputB();
+                outputExpression();
                 term = false;
-                SetWindowText(hStatic1, L"");
+                SetWindowText(hStaticResult, L"");
             }
+            else if (condition == true && b != "")
+                outputExpression();
             break;
         case 15:
             if (a != "" && b == "")
@@ -896,13 +939,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 if (a != "-")
                 {
                     sign = '+';
-                    condition = false;
-                    SetWindowText(hStatic3, L"+");
-                    SetWindowText(hStatic1, L"");
+                    condition = true;
+                    outputExpression();
+                    SetWindowText(hStaticResult, L"");
                 }
-                else
+            }
+            break;
+        case 19:
+            if (a != "" && b == "")
+            {
+                if (a != "-")
                 {
-                    a.clear();
+                    sign = '^';
+                    condition = true;
+                    outputExpression();
+                    SetWindowText(hStaticResult, L"");
                 }
             }
             break;
@@ -914,79 +965,92 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 {
                     //при делении
                 case '/':
-                    if (a.length() <= 102 && b.length() <= 102 && b != "0" && b != "-0")
+                    if (a.length() <= 255 && b.length() <= 255 && std::stod(b) != 0)
                     {
-                        first = std::stod(a);
-                        second = std::stod(b);
-                        result = first / second;
-                        if (result != -0)
-                        {
-                            removingZeros();
-                            outputResult();
-                            SetWindowText(hStatic3, L"");
-                        }
+                        if (std::stod(a) == -(0))
+                            first = 0;
                         else
-                            SetWindowText(hStatic1, L"0");
+                            first = std::stod(a);
+                        if (std::stod(b) == -(0))
+                            second = 0;
+                        else
+                            second = std::stod(b);
+                        result = first / second;
+                        removingZeros();
                     }
                     else
-                        SetWindowText(hStatic1, L"ERROR");
+                    {
+                        SetWindowText(hStaticResult, L"ERROR");
+                        strResult = "ERROR";
+                    }
                     break;
                     //при умножении
                 case '*':
-                    if (a.length() <= 102 && b.length() <= 102)
+                    if (a.length() <= 255 && b.length() <= 255)
                     {
-                        first = std::stod(a);
-                        second = std::stod(b);
-                        result = first * second;
-                        if (result != -0)
-                        {
-                            removingZeros();
-                            outputResult();
-                            SetWindowText(hStatic3, L"");
-                        }
+                        if (std::stod(a) == -(0))
+                            first = 0;
                         else
-                            SetWindowText(hStatic1, L"0");
+                            first = std::stod(a);
+                        if (std::stod(b) == -(0))
+                            second = 0;
+                        else
+                            second = std::stod(b);
+                        result = first * second;
+                        removingZeros();
                     }
                     else
-                        SetWindowText(hStatic1, L"ERROR");
+                        SetWindowText(hStaticResult, L"ERROR");
                     break;
                     //при разности
                 case '-':
-                    if (a.length() <= 102 && b.length() <= 102)
+                    if (a.length() <= 255 && b.length() <= 255)
                     {
                         first = std::stod(a);
                         second = std::stod(b);
                         result = first - second;
                         removingZeros();
-                        outputResult();
-                        SetWindowText(hStatic3, L"");
                     }
                     else
-                        SetWindowText(hStatic1, L"ERROR");
+                        SetWindowText(hStaticResult, L"ERROR");
                     break;
                     //при сложении
                 case '+':
-                    if (a.length() <= 102 && b.length() <= 102)
+                    if (a.length() <= 255 && b.length() <= 255)
                     {
                         first = std::stod(a);
                         second = std::stod(b);
                         result = first + second;
                         removingZeros();
-                        outputResult();
-                        SetWindowText(hStatic3, L"");
                     }
                     else
-                        SetWindowText(hStatic1, L"ERROR");
+                        SetWindowText(hStaticResult, L"ERROR");
+                    break;
+                case '^':
+                    if (a.length() <= 255 && b.length() <= 255)
+                    {
+                        first = std::stod(a);
+                        second = std::stod(b);
+                        result = pow(first, second);
+                        removingZeros();
+                    }
+                    else
+                        SetWindowText(hStaticResult, L"ERROR");
                     break;
                 }
                 //сброс после вывода, первое число = итог
-                a = strResult;
+                if (strResult != "ERROR")
+                {
+                    a = strResult;
+                    SetWindowText(hStaticResult, L"");
+                }
+                else
+                    a = "";
                 b.clear();
                 sign = '\0';
-                condition = true;
+                condition = false;
                 term = true;
-                outputA();
-                SetWindowText(hStatic4, L"");
+                outputExpression();
             }
             break;
         case 2:
@@ -994,24 +1058,24 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             if (b == "" && sign == '\0' && a != "")
             {
                 a.pop_back();
-                outputA();
-                SetWindowText(hStatic1, L"");
+                outputExpression();
+                SetWindowText(hStaticResult, L"");
                 term = false;
             }
             else if (b == "" && sign != '\0')
             {
                 sign = '\0';
-                condition = true;
-                SetWindowText(hStatic3, L"");
+                condition = false;
+                outputExpression();
             }
             else if (b != "")
             {
                 b.pop_back();
-                outputB();
+                outputExpression();
                 if (b != "")
-                {
                     outputIntermediateResult();
-                }
+                else
+                    SetWindowText(hStaticResult, L"");
             }
         }
     }
