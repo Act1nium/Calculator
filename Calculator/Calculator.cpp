@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-//лейблы для выражения и result.
+//лейблы для выражения и result
 static HWND hStaticResult, hStaticExpression;
 //переменные, которые будем использовать
 std::string a = "", b = "", expression = "", strResult; //первое число; второе; итог (строкой)
