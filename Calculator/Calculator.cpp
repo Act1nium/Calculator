@@ -1,9 +1,6 @@
 #include <windows.h>
-#include <stdlib.h>
-#include <string.h>
 #include <tchar.h>
 #include <string>
-#include <vector>
 
 //лейблы для выражения и result
 static HWND hStaticResult, hStaticExpression;
@@ -253,7 +250,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         HWND hButton1;
         hButton1 = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Button"),
-            TEXT("⌫"), WS_CHILD,
+            TEXT("\u232B"), WS_CHILD,
             100, 55, 40, 40,
             hWnd, reinterpret_cast<HMENU>(2),
             NULL, NULL
@@ -459,7 +456,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         ShowWindow(hStaticResult, SW_SHOW);
         UpdateWindow(hStaticResult);
 
-        //текстовое поле для вывода a, sign и b (выражения)
+        //текстовое поле для вывода выражения
         hStaticExpression = CreateWindowEx(
             WS_EX_TRANSPARENT, TEXT("Static"),
             TEXT(""), WS_CHILD | ES_RIGHT | SS_CENTERIMAGE,
@@ -1072,7 +1069,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             {
                 b.pop_back();
                 outputExpression();
-                if (b != "")
+                if (b != "" && b != "-")
                     outputIntermediateResult();
                 else
                     SetWindowText(hStaticResult, L"");
