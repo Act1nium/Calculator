@@ -733,7 +733,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         for (int i = 0; i < a.length(); i++)
                         {
                             if (a[i] == '.')
-                                points += 1;
+                                points++;
                             if (i == a.length() - 1 && (points == 1 || a == "-"))
                             {
                                 a += "0";
@@ -772,7 +772,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     for (int i = 0; i < b.length(); i++)
                     {
                         if (b[i] == '.')
-                            points += 1;
+                            points++;
                         if (i == b.length() - 1 && (points == 1 || std::stod(a) != 0))
                         {
                             b += "0";
@@ -802,7 +802,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         for (int i = 0; i < a.length(); i++)
                         {
                             if (a[i] == '.')
-                                points += 1;
+                                points++;
                             if (i == a.length() - 1 && points == 0)
                             {
                                 if (a == "" || a == "-")
@@ -842,7 +842,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                     {
                         if (b[i] == '.')
                         {
-                            points += 1;
+                            points++;
                             break;
                         }
                         if (i == b.length() - 1 && points == 0)
