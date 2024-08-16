@@ -45,5 +45,23 @@
     <Image Include="Calculator.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+    <Image Include="..\..\..\..\Downloads\9110956_calculator_math_icon.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Downloads\8665100_calculator_icon.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Downloads\numbers-file-outlined-rectangular-symbol_icon-icons.com_57540.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Downloads\9039916_calculator_icon.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Downloads\4639308_business_calculator_estimation_maths_icon.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Downloads\9110956_calculator_math_icon.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

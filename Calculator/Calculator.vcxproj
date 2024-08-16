@@ -139,6 +139,12 @@
     <ResourceCompile Include="Calculator.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\4639308_business_calculator_estimation_maths_icon.ico" />
+    <Image Include="..\..\..\..\Downloads\8665100_calculator_icon.ico" />
+    <Image Include="..\..\..\..\Downloads\9039916_calculator_icon.ico" />
+    <Image Include="..\..\..\..\Downloads\9110956_calculator_math_icon.ico" />
+    <Image Include="..\..\..\..\Downloads\9110956_calculator_math_icon.png" />
+    <Image Include="..\..\..\..\Downloads\numbers-file-outlined-rectangular-symbol_icon-icons.com_57540.ico" />
     <Image Include="Calculator.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
