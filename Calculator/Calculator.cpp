@@ -1,4 +1,3 @@
-#include "resource.h"
 #include <windows.h>
 #include <tchar.h>
 #include <string>
@@ -171,11 +170,12 @@ int WINAPI WinMain(
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = hInstance;
+    wcex.hIcon = LoadIcon(wcex.hInstance, IDI_APPLICATION);
     wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wcex.lpszMenuName = NULL;
     wcex.lpszClassName = szWindowClass;
-    wcex.hIconSm = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON1));
+    wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
     if (!RegisterClassEx(&wcex)) {
         MessageBox(NULL, _T("Call to RegisterClassEx failed!"),
