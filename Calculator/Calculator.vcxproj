@@ -139,6 +139,7 @@
     <ResourceCompile Include="Calculator.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\9110956_calculator_math_icon.ico" />
     <Image Include="Calculator.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
