@@ -39,38 +39,38 @@ void removingZeros()
 //вывод промежуточного результата
 void outputIntermediateResult()
 {
-    switch (sign)
+    if (a.length() <= 255 && b.length() <= 255)
     {
-        //при делении
-    case '/':
-        if (a.length() <= 255 && b.length() <= 255 && std::stod(b) != 0)
+        switch (sign)
         {
-            first = std::stod(a);
-            second = std::stod(b);
-            result = first / second;
-            if (result != -(0))
+            //при делении
+        case '/':
+            if (std::stod(b) != 0)
             {
-                removingZeros();
-                for (int i = 0; i < strResult.length(); i++)
+                first = std::stod(a);
+                second = std::stod(b);
+                result = first / second;
+                if (result != -(0))
                 {
-                    buffer[i] = strResult[i];
+                    removingZeros();
+                    for (int i = 0; i < strResult.length(); i++)
+                    {
+                        buffer[i] = strResult[i];
+                    }
+                    SetWindowTextA(hStaticResult, buffer);
+                    memset(buffer, 0, sizeof(buffer));
                 }
-                SetWindowTextA(hStaticResult, buffer);
-                memset(buffer, 0, sizeof(buffer));
+                else
+                    SetWindowText(hStaticResult, L"0");
             }
             else
-                SetWindowText(hStaticResult, L"0");
-        }
-        else
-            SetWindowText(hStaticResult, L"ERROR");
-        break;
-        //при умножении
-    case '*':
-        if (a.length() <= 255 && b.length() <= 255)
-        {
+                SetWindowText(hStaticResult, L"ERROR");
+            break;
+            //при умножении
+        case '*':
             first = std::stod(a);
             if (b != "-")
-            second = std::stod(b);
+                second = std::stod(b);
             else
             {
                 SetWindowText(hStaticResult, L"");
@@ -89,14 +89,9 @@ void outputIntermediateResult()
             }
             else
                 SetWindowText(hStaticResult, L"0");
-        }
-        else
-            SetWindowText(hStaticResult, L"ERROR");
-        break;
-        //при разности
-    case '-':
-        if (a.length() <= 255 && b.length() <= 255)
-        {
+            break;
+            //при разности
+        case '-':
             first = std::stod(a);
             second = std::stod(b);
             result = first - second;
@@ -107,14 +102,9 @@ void outputIntermediateResult()
             }
             SetWindowTextA(hStaticResult, buffer);
             memset(buffer, 0, sizeof(buffer));
-        }
-        else
-            SetWindowText(hStaticResult, L"ERROR");
-        break;
-        //при сложении
-    case '+':
-        if (a.length() <= 255 && b.length() <= 255)
-        {
+            break;
+            //при сложении
+        case '+':
             first = std::stod(a);
             second = std::stod(b);
             result = first + second;
@@ -125,27 +115,27 @@ void outputIntermediateResult()
             }
             SetWindowTextA(hStaticResult, buffer);
             memset(buffer, 0, sizeof(buffer));
-        }
-        else
-            SetWindowText(hStaticResult, L"ERROR");
-        break;
-    case '^':
-        if (a.length() <= 255 && b.length() <= 255)
-        {
-            first = std::stod(a);
-            second = std::stod(b);
-            result = pow(first, second);
-            removingZeros();
-            for (int i = 0; i < strResult.length(); i++)
+            break;
+        case '^':
+            if (!(a[0] == '-' && std::stod(b) > 0 && std::stod(b) < 1))
             {
-                buffer[i] = strResult[i];
+                first = std::stod(a);
+                second = std::stod(b);
+                result = pow(first, second);
+                removingZeros();
+                for (int i = 0; i < strResult.length(); i++)
+                {
+                    buffer[i] = strResult[i];
+                }
+                SetWindowTextA(hStaticResult, buffer);
+                memset(buffer, 0, sizeof(buffer));
             }
-            SetWindowTextA(hStaticResult, buffer);
-            memset(buffer, 0, sizeof(buffer));
+            else
+                SetWindowText(hStaticResult, L"COMPLEX");
         }
-        else
-            SetWindowText(hStaticResult, L"ERROR");
     }
+    else
+        SetWindowText(hStaticResult, L"ERROR");
 }
 
 static TCHAR szWindowClass[] = _T("DesktopApp");
@@ -958,33 +948,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
             //вывод ответа + удаление нулей и точки на конце на конце
             if (a != "" && b != "" && b != "-")
             {
-                switch (sign)
+                if (a.length() <= 255 && b.length() <= 255)
                 {
-                    //при делении
-                case '/':
-                    if (a.length() <= 255 && b.length() <= 255 && std::stod(b) != 0)
+                    switch (sign)
                     {
-                        if (std::stod(a) == -(0))
-                            first = 0;
+                        //при делении
+                    case '/':
+                        if (std::stod(b) != 0)
+                        {
+                            if (std::stod(a) == -(0))
+                                first = 0;
+                            else
+                                first = std::stod(a);
+                            if (std::stod(b) == -(0))
+                                second = 0;
+                            else
+                                second = std::stod(b);
+                            result = first / second;
+                            removingZeros();
+                        }
                         else
-                            first = std::stod(a);
-                        if (std::stod(b) == -(0))
-                            second = 0;
-                        else
-                            second = std::stod(b);
-                        result = first / second;
-                        removingZeros();
-                    }
-                    else
-                    {
-                        SetWindowText(hStaticResult, L"ERROR");
-                        strResult = "ERROR";
-                    }
-                    break;
-                    //при умножении
-                case '*':
-                    if (a.length() <= 255 && b.length() <= 255)
-                    {
+                        {
+                            SetWindowText(hStaticResult, L"ERROR");
+                            strResult = "ERROR";
+                        }
+                        break;
+                        //при умножении
+                    case '*':
                         if (std::stod(a) == -(0))
                             first = 0;
                         else
@@ -995,48 +985,44 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                             second = std::stod(b);
                         result = first * second;
                         removingZeros();
-                    }
-                    else
-                        SetWindowText(hStaticResult, L"ERROR");
-                    break;
-                    //при разности
-                case '-':
-                    if (a.length() <= 255 && b.length() <= 255)
-                    {
+                        break;
+                        //при разности
+                    case '-':
                         first = std::stod(a);
                         second = std::stod(b);
                         result = first - second;
                         removingZeros();
-                    }
-                    else
-                        SetWindowText(hStaticResult, L"ERROR");
-                    break;
-                    //при сложении
-                case '+':
-                    if (a.length() <= 255 && b.length() <= 255)
-                    {
+                        break;
+                        //при сложении
+                    case '+':
                         first = std::stod(a);
                         second = std::stod(b);
                         result = first + second;
                         removingZeros();
+                        break;
+                    case '^':
+                        if (!(a[0] == '-' && std::stod(b) > 0 && std::stod(b) < 1))
+                        {
+                            first = std::stod(a);
+                            second = std::stod(b);
+                            result = pow(first, second);
+                            removingZeros();
+                        }
+                        else
+                        {
+                            SetWindowText(hStaticResult, L"COMPLEX");
+                            strResult = "COMPLEX";
+                        }
+                        break;
                     }
-                    else
-                        SetWindowText(hStaticResult, L"ERROR");
-                    break;
-                case '^':
-                    if (a.length() <= 255 && b.length() <= 255)
-                    {
-                        first = std::stod(a);
-                        second = std::stod(b);
-                        result = pow(first, second);
-                        removingZeros();
-                    }
-                    else
-                        SetWindowText(hStaticResult, L"ERROR");
-                    break;
+                }
+                else
+                {
+                    SetWindowText(hStaticResult, L"ERROR");
+                    strResult = "ERROR";
                 }
                 //сброс после вывода, первое число = итог
-                if (strResult != "ERROR")
+                if (strResult != "ERROR" && strResult != "COMPLEX")
                 {
                     a = strResult;
                     SetWindowText(hStaticResult, L"");
