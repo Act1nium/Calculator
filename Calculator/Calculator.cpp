@@ -36,6 +36,20 @@ void removingZeros()
     memset(buffer, 0, sizeof(buffer));
  }
 
+ //является ли число не целым
+ bool isFractional(std::string second)
+ {
+     int points = 0;
+     for (int i = 0; i < second.length(); i++)
+     {
+         if (second[i] == '.')
+             points++;
+         else if (points == 1 && second[i] != '0')
+             return true;
+     }
+     return false;
+ }
+
 //вывод промежуточного результата
 void outputIntermediateResult()
 {
@@ -117,7 +131,7 @@ void outputIntermediateResult()
             memset(buffer, 0, sizeof(buffer));
             break;
         case '^':
-            if (!(a[0] == '-' && std::stod(b) > 0 && std::stod(b) < 1))
+            if (!(a[0] == '-' && isFractional(b)))
             {
                 first = std::stod(a);
                 second = std::stod(b);
@@ -1001,7 +1015,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         removingZeros();
                         break;
                     case '^':
-                        if (!(a[0] == '-' && std::stod(b) > 0 && std::stod(b) < 1))
+                        if (!(a[0] == '-' && isFractional(b)))
                         {
                             first = std::stod(a);
                             second = std::stod(b);
